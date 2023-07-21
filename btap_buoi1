@@ -1,0 +1,27 @@
+
+//Xay dung mot lop so thuc gom co tu so và mau so, xay dung cac phuong thuc nhap và xuat
+#include<iostream>
+using namespace std;
+class Phanso{
+	private:
+	int tu;
+	int mau;
+	public:
+	void Nhap(){
+		cout<<"Nhap tu so:";cin>>this->tu;
+		cout<<"Nhap mau so:";cin>>this->mau;
+	while(mau==0){
+			cout<<"Nhap lai mau:";
+			cin>>mau;
+		}
+	}
+	void Xuat(){
+		cout<<tu<<"/"<<mau<<endl;
+	}	
+};
+int main(){
+	Phanso a;
+	a.Nhap();
+	a.Xuat();
+	return 0;
+}
