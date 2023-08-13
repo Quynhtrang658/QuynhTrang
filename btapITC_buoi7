@@ -1,0 +1,142 @@
+#include <iostream>
+#include<string.h>
+using namespace std;
+class Nguoi{
+	protected:
+		char Hoten[30];
+		int Namsinh;
+	public:
+		Nguoi(char *Hoten,int Namsinh=""){
+			strcpy(this->Hoten,Hoten);
+			this->Namsinh=Namsinh;
+		}
+		
+		void Nhap(){
+			cout<<"Nhap ho ten:";
+			fflush(stdin);
+			cin.getline(Hoten,30);
+			cout<<"Nhap nam sinh:";
+			cin>>Namsinh;
+		}
+		void Xuat(){
+			cout<<"Ho ten:"<<Hoten<<endl
+			    <<"Nam sinh:"<<Namsinh<<endl;
+		}
+		friend istream& operator >> (istream& in,Nguoi &a){
+			cout<<"Nhap ho ten:";
+			fflush(stdin);
+			in.getline(a.Hoten,30);
+			cout<<"Nhap nam sinh:";
+			in>>a.Namsinh;
+			return in;
+		}
+		friend ostream& operator << (ostream& out,Nguoi a){
+			out<<"Ho ten:"<<a.Hoten<<endl
+			    <<"Nam sinh:"<<a.Namsinh<<endl;
+   			return out;
+		}
+			
+};
+class Thisinh : public Nguoi{
+	private:
+		int SBD;
+		float diemT,diemL,diemH;
+	public:
+	
+	 Thisinh(char *Hoten,int Namsinh="",int SBD="",float diemT=0,float diemL=0,float diemH=0):Nguoi(Hoten,Namsinh){
+ 		this->SBD=SBD;
+ 		this->diemT=diemL=diemH;
+ 	}
+		void Nhap(){
+			Nguoi::Nhap();
+			cout<<"Nhap so bao danh:";
+			cin>>SBD;
+			cout<<"Nhap diem mon toan:";
+			cin>>diemT;
+			cout<<"Nhap diem mon ly:";
+			cin>>diemL;
+			cout<<"Nhap diem mon hoa:";
+			cin>>diemH;	
+		}
+		void Xuat(){
+			Nguoi::Xuat();
+			cout<<"So bao danh:"<<SBD<<endl
+          		<<"Diem mon toan:"<<diemT<<endl
+          		<<"Diem mon ly:"<<diemL<<endl
+          		<<"Diem mon hoa:"<<diemH<<endl;
+		}
+		friend istream& operator >> (istream& in,Thisinh &a){
+			in>>(Nguoi&)a;
+			cout<<"Nhap so bao danh:";
+			in>>a.SBD;
+			cout<<"Nhap diem mon toan:";
+			in>>a.diemT;
+			cout<<"Nhap diem mon ly:";
+			in>>a.diemL;
+			cout<<"Nhap diem mon hoa:";
+			in>>a.diemH;
+			return in;
+		}
+		friend ostream& operator << (ostream& out,Thisinh a){
+			out<<(Nguoi)a;
+			out<<"So bao danh:"<<a.SBD<<endl
+          		<<"Diem mon toan:"<<a.diemT<<endl
+          		<<"Diem mon ly:"<<a.diemL<<endl
+          		<<"Diem mon hoa:"<<a.diemH<<endl
+				<<"Tong diem ba mon:"<<a.Tongdiem()<<endl;
+          		return out;
+		}
+		float Tongdiem(){
+			return this->diemT+this->diemL+this->diemH;
+		}
+		int set_SBD(){
+			return this->SBD;
+		}
+};
+void NhapDS(Thisinh a[],int &n){
+	cout<<"Thong tin danh sach "<<n<<"thi sinh \n";
+	for(int i=0;i<n;i++){
+		cout<<"Nhap thong tin cho thi sinh thu "<<i+1<<endl;
+		a[i].Nhap();
+	}
+}
+void XuatDS(Thisinh a[],int &n){
+	cout<<"Thong tin danh sach "<<n<<"thi sinh \n";
+	for(int i=0;i<n;i++){
+		cout<<"Xuat thong tin cho thi sinh thu "<<i+1<<endl;
+		a[i].Xuat();
+	}
+}
+void Sapxep(Thisinh a[],int &n){
+	for(int i=0;i<n;i++){
+		for(int j=i+1;j<n;j++){
+			if(a[i].Tongdiem()< a[j].Tongdiem()){
+				swap(a[i],a[j]);
+			}
+		}
+	}
+	cout<<"\t Da sap xep thanh cong! \n";
+	XuatDS(a,n);
+}
+void found(Thisinh a[],int &n){
+	bool check=false;
+	for(int i=0;i<n;i++){
+		if(strcmpi(a[i].set_SBD(),"003")==0){
+			a[i].set_SBD();
+			a[i].Xuat();
+			check=true;
+		}
+	}
+	cout<<(check == false? "Khong co SBD ban muon tim!"\n :"" );
+}
+int main(int argc, char *argv[])
+{
+	int n;
+	cin>>n;
+	Thisinh a[n];
+	NhapDS(a,n);
+	XuatDS(a,n);
+	Sapxep(a,n);
+	found(a,n);
+	return 0;
+}
